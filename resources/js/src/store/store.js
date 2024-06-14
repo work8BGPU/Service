@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from 'vuex-persistedstate';
 
 const store = createStore({
     state() {
@@ -18,11 +19,18 @@ const store = createStore({
         setToken(state, token) {
             state.token = token;
         },
-        setAuth(state, user, token) {
+        auth(state, { user, token }) {
             store.commit("setIsAuth", true);
-            store.commit("setUser", user, token);
+            store.commit("setUser", user);
+            store.commit("setToken", token);
         },
+        logout(state) {
+            store.commit("setIsAuth", false);
+            store.commit("setUser", null);
+            store.commit("setToken", null);
+        }
     },
+    plugins: [createPersistedState()],
 });
 
 export default store;

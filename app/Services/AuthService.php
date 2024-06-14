@@ -23,7 +23,7 @@ class AuthService
             return false;
         }
 
-        if (!$token = Auth::attempt($credentials, $data['remember'])) {
+        if (!$token = Auth::attempt($credentials)) {
             return false;
         }
 

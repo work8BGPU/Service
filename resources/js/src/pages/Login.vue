@@ -76,7 +76,7 @@ const login = () => {
         .post("/api/login", form.value)
         .then((res) => {
             if (res.status === 201) {
-                store.commit("setAuth", res.data.user, res.data.token);
+                store.commit("auth", {user: res.data.user, token: res.data.token});
                 router.push("/");
             }
         })
