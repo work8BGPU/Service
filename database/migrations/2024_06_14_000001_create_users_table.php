@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('role_id')->references('id')->on('roles')->noActionOnDelete()->cascadeOnUpdate();
             
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('phone_id')->nullable()->constrained()->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('phone_id')->nullable()->unique()->constrained()->nullOnDelete()->cascadeOnUpdate();
             
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
