@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Passenger\Passenger;
 use App\Models\User\Employee;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,7 @@ class Phone extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description',
+        'phone', 'description',
         'passenger_id'
     ];
 
@@ -35,5 +36,10 @@ class Phone extends Model
     public function employeePersonal(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'personal_phone_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

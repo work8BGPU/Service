@@ -3,6 +3,8 @@
 namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Phone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -21,7 +23,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'role_id', 'employee_id',
-        'password'
+        'password', 'phone_id'
     ];
 
     /**
@@ -45,7 +47,8 @@ class User extends Authenticatable implements JWTSubject
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role_id' => 'integer',
-            'employee_id' => 'integer'
+            'employee_id' => 'integer',
+            'phone_id' => 'integer'
         ];
     }
 
@@ -77,5 +80,10 @@ class User extends Authenticatable implements JWTSubject
     public function employee(): HasOne
     {
         return $this->hasOne(Employee::class);
+    }
+
+    public function phone(): HasOne
+    {
+        return $this->hasOne(Phone::class);
     }
 }
