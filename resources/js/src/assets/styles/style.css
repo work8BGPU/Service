@@ -1,0 +1,140 @@
+:root {
+  --color-main: #fff;
+  --color-second: #333;
+  --color-btn: #1451EE;
+  --color-btn-hover: #0d3aad;
+  --color-btn-active: #00288D;
+  --color-not-active: #777;
+
+  --font-size-large: 2.2rem;
+  --font-size-normal: 2rem;
+  --font-size-small: 1.8rem;
+  --font-size-extrasmall: 1.6rem;
+
+  --container-width-lg: 80%;
+  --container-width-md: 85%;
+  --container-width-sm: 90%;
+  --container-width-phone: 95%;
+  --container-width: var(--container-width-lg);
+
+  --form-width-lg: 30%;
+  --form-width-md: 40%;
+  --form-width-sm: 70%;
+  --form-width: var(--form-width-lg);
+
+  --border-radius: 1rem;
+
+  --transition: all ease-in-out 0.2s;
+}
+
+@font-face {
+  font-family: Stolzl;
+  font-weight: bold;
+  src: url('../fonts/stolzl_bold.otf');
+}
+
+@font-face {
+  font-family: Stolzl;
+  font-weight: normal;
+  src: url('../fonts/stolzl_regular.otf');
+}
+
+html {
+  font-size: 62.5%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-main);
+  color: var(--color-second);
+  font-family: 'Stolzl', sans-serif;
+  font-size: var(--font-size-normal);
+  line-height: 1.6;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 4.6rem;
+}
+
+h2 {
+  font-size: 3.2rem;
+  margin-bottom: 7rem;
+}
+
+h3 {
+  font-size: 2.8rem;
+}
+
+h4 {
+  font-size: 2.4rem;
+}
+
+h5 {
+  font-size: 2rem;
+}
+
+h6 {
+  font-size: 1.8rem;
+}
+
+img {
+  display: block;
+  object-fit: cover;
+}
+
+button > img {
+  width: 100%;
+  height: 100%;
+}
+a {
+  color: var(--color-second);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.nav-link {
+  font-size: var(--font-size-small);
+  opacity: 0.6;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+section {
+  position: relative;
+  padding: 7rem 0;
+}
+
+.container {
+  width: var(--container-width);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+}
+
