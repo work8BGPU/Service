@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use App\Http\Requests\Api\Auth\RegisterRequest;
 use App\Services\AuthService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -65,12 +69,31 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        //TODO: При обновлении токена, если access token будет не тот, то выдать ошибку
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Токен обновлен',
-            'user' => Auth::user(),
-            'token' => Auth::refresh()
-        ]);
+        try {
+            $token = JWTAuth::getToken();
+            if (!$token) {
+                return response()->json(['message' => 'Токен не предоставлен'], Response::HTTP_BAD_REQUEST);
+            }
+
+            $user = JWTAuth::toUser($token);
+            if (!$user) {
+                return response()->json(['message' => 'Неверный токен'], Response::HTTP_UNAUTHORIZED);
+            }
+
+            $newToken = JWTAuth::refresh($token);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Токен обновлен',
+                'user' => $user,
+                'token' => $newToken
+            ]);
+        } catch (TokenExpiredException $e) {
+            return response()->json(['message' => 'Токен просрочен'], Response::HTTP_UNAUTHORIZED);
+        } catch (TokenInvalidException $e) {
+            return response()->json(['message' => 'Неверный токен'], Response::HTTP_UNAUTHORIZED);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Ошибка обновления токена'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
