@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Phone;
 use App\Models\User\User;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,9 +11,19 @@ class AuthService
 {
     public function login(array $data): array|bool
     {
-        $credentials = Arr::only($data, ['phone', 'password']);
+        $credentials = [
+            'password' => $data['password']
+        ];
 
-        if (!$token = Auth::attempt($credentials)) {
+        $phone = $data['phone'];
+
+        if ($phoneModel = Phone::where('phone', $phone)->first()) {
+            $credentials['phone_id'] = $phoneModel->id;
+        } else {
+            return false;
+        }
+
+        if (!$token = Auth::attempt($credentials, $data['remember'])) {
             return false;
         }
 

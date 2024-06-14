@@ -1,5 +1,9 @@
 <template>
-    <div>ssss</div>
+    <sectino>
+        <div class="container">
+            <div>ssss</div>
+        </div>
+    </sectino>
 </template>
 
 <script setup>

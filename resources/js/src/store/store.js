@@ -5,6 +5,7 @@ const store = createStore({
         return {
             isAuth: false,
             user: null,
+            token: null,
         };
     },
     mutations: {
@@ -14,9 +15,12 @@ const store = createStore({
         setUser(state, user) {
             state.user = user;
         },
-        setAuth(state, user) {
+        setToken(state, token) {
+            state.token = token;
+        },
+        setAuth(state, user, token) {
             store.commit("setIsAuth", true);
-            store.commit("setUser", user);
+            store.commit("setUser", user, token);
         },
     },
 });

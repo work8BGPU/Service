@@ -74,7 +74,7 @@ h6 {
 }
 
 h1 {
-  font-size: 4.6rem;
+  font-size: 4rem;
 }
 
 h2 {
@@ -138,3 +138,83 @@ section {
   flex-direction: column;
 }
 
+/* <=================== Форма ===================> */
+form {
+  display: flex;
+  flex-direction: column;
+  width: var(--form-width);
+  gap: 2rem;
+}
+
+.form__block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form__block.checkbox {
+  flex-direction: row;
+  align-items: center;
+
+}
+
+label {
+  font-size: var(--font-size-small);
+  color: var(--color-1);
+  margin-left: 1rem;
+}
+
+input {
+  font-size: var(--font-size-normal);
+  border-radius: var(--border-radius);
+  background: none;
+  border: none;
+}
+
+.input-main {
+  color: var(--color-1);
+  border: 0.1rem solid var(--color-1);
+  padding: 0.8rem 1.5rem;
+  width: 100%;
+}
+
+form > .btn-main {
+  margin-top: 2rem;
+  align-self: center;
+}
+
+.error {
+  color: red;
+  font-size: var(--font-size-small);
+  margin-top: -1rem;
+}
+
+/* <================ Кнопки ================> */
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: var(--transition);
+  font-size: var(--font-size-normal);
+}
+
+.btn-main {
+  background-color: var(--color-btn);
+  color: var(--color-main);
+  font-size: var(--font-size-normal);
+  font-weight: 700;
+  padding: 1rem 2.5rem;
+  border-radius: var(--border-radius);
+}
+
+.btn-main:hover {
+  background-color: var(--color-btn-hover);
+}
+
+.btn-main:active {
+  background-color: var(--color-btn-active);
+}
+/* <================ Конец кнопок ================> */
+
+/* <================ Конец формы ================> */
