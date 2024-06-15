@@ -11,10 +11,8 @@
   --font-size-small: 1.8rem;
   --font-size-extrasmall: 1.6rem;
 
-  --container-width-lg: 80%;
-  --container-width-md: 85%;
-  --container-width-sm: 90%;
-  --container-width-phone: 95%;
+  --container-width-lg: 92%;
+  --container-width-sm: 95%;
   --container-width: var(--container-width-lg);
 
   --form-width-lg: 30%;
@@ -91,11 +89,11 @@ h4 {
 }
 
 h5 {
-  font-size: 2rem;
+  font-size: 2.2rem;
 }
 
 h6 {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 img {

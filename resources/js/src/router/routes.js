@@ -1,5 +1,6 @@
 import Main from "@/pages/Main.vue";
 import Login from "@/pages/Login.vue";
+import EmployeeCreate from "@/pages/Employee/Create.vue";
 
 const routes = [
     {
@@ -11,6 +12,11 @@ const routes = [
         path: "/login",
         component: Login,
         name: "login",
+    },
+    {
+        path: "/employees/create",
+        component: EmployeeCreate,
+        name: "employee.create",
     },
 ];
 

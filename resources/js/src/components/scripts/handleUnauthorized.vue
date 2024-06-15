@@ -1,38 +1,42 @@
-<template></template>
-
 <script setup>
-import axios from "axios";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import axios from 'axios';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 const store = useStore();
 const router = useRouter();
 
 const refreshToken = async () => {
-    try {
-        const response = await axios.post("/api/refresh");
-        const token = response.data.token;
-        store.commit("auth", token);
-        return token;
-    } catch (error) {
-        router.push("/login");
-        throw error;
-    }
+  try {
+    const response = await axios.post('/api/refresh');
+    const token = response.data.token;
+    store.commit('setToken', token);
+    return token;
+  } catch (error) {
+    router.push('/login');
+    throw error;
+  }
 };
 
 const handleUnauthorized = async (error) => {
-    if (error.response.status === 401) {
-        const originalRequest = error.config;
-        if (!originalRequest._retry) {
-            originalRequest._retry = true;
-            const token = await refreshToken();
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            return axios(originalRequest);
-        } else {
-            store.commit("logout");            
-            router.push("/login");
-        }
+  if (error.response.status === 401) {
+    const originalRequest = error.config;
+    if (!originalRequest._retry) {
+      originalRequest._retry = true;
+      const token = await refreshToken();
+      originalRequest.headers.Authorization = `Bearer ${token}`;
+      return axios(originalRequest);
+    } else {
+      router.push('/login');
     }
-    return Promise.reject(error);
+  }
+  return Promise.reject(error);
 };
+
+defineExpose({
+  handleUnauthorized,
+});
 </script>
+
+<template>
+</template>

@@ -9,10 +9,10 @@ const router = createRouter({
     routes,
 });
 
-const token = store.state.token;
-const user = store.state.user;
-
 router.beforeEach((to, from, next) => {
+    const token = store.state.token;
+    const user = store.state.user;
+
     if (!token) {
         if (to.name === "login") return next();
         else return next({ name: "login" });
@@ -24,5 +24,6 @@ router.beforeEach((to, from, next) => {
 
     next();
 });
+
 
 export default router;

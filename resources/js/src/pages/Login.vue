@@ -65,7 +65,6 @@ const form = ref({
 const errors = ref({});
 
 const router = useRouter();
-
 const store = useStore();
 
 const login = () => {
@@ -76,7 +75,10 @@ const login = () => {
         .post("/api/login", form.value)
         .then((res) => {
             if (res.status === 201) {
-                store.commit("auth", {user: res.data.user, token: res.data.token});
+                store.commit("auth", {
+                    user: res.data.user,
+                    token: res.data.token,
+                });
                 router.push("/");
             }
         })
@@ -120,6 +122,10 @@ const login = () => {
 }
 
 .login form {
+    width: 100%;
+}
+
+.login form > button {
     width: 100%;
 }
 </style>
