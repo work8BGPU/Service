@@ -1,9 +1,9 @@
 <template>
-    <sectino>
+    <section class="main__section">
         <div class="container">
             <div>ssss</div>
         </div>
-    </sectino>
+    </section>
 </template>
 
 <script setup>
@@ -14,4 +14,7 @@ const store = useStore();
 </script>
 
 <style scoped>
+.main__section {
+    margin-top: 7rem;
+}
 </style>

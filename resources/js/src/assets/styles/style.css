@@ -111,15 +111,6 @@ a {
   transition: var(--transition);
 }
 
-.nav-link {
-  font-size: var(--font-size-small);
-  opacity: 0.6;
-}
-
-.nav-link:hover {
-  opacity: 1;
-}
-
 ul, ol {
   list-style: none;
 }

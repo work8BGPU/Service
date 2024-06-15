@@ -1,7 +1,7 @@
 <template>
     <header class="header">
         <div class="container header__container">
-            <button class="btn-aside-menu">
+            <button @click="toggleAside" class="btn-aside-menu">
                 <img src="@/assets/img/icons/burger-menu.svg" alt="Меню" />
             </button>
             <h1 class="header__title">Careflow</h1>
@@ -111,6 +111,10 @@ const logout = () => {
             }
         });
 };
+
+const toggleAside = () => {
+    store.commit("toggleIsAsideOpen");
+}
 </script>
 
 <style scoped>

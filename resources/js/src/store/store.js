@@ -7,6 +7,7 @@ const store = createStore({
             isAuth: false,
             user: null,
             token: null,
+            isAsideOpen: true
         };
     },
     mutations: {
@@ -28,6 +29,9 @@ const store = createStore({
             store.commit("setIsAuth", false);
             store.commit("setUser", null);
             store.commit("setToken", null);
+        },
+        toggleIsAsideOpen(state) {
+            state.isAsideOpen = !state.isAsideOpen;
         }
     },
     plugins: [createPersistedState()],
