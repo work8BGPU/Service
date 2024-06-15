@@ -2,6 +2,7 @@ import Main from "@/pages/Main.vue";
 import Login from "@/pages/Login.vue";
 import EmployeeCreate from "@/pages/Employee/Create.vue";
 import UserCreate from "@/pages/User/Create.vue";
+import PassengerCreate from "@/pages/Passenger/Create.vue";
 
 const routes = [
     {
@@ -23,7 +24,12 @@ const routes = [
         path: "/users/create",
         component: UserCreate,
         name: "user.create"
-    }
+    },
+    {
+        path: "/passengers/create",
+        component: PassengerCreate,
+        name: "passenger.create"
+    },
 ];
 
 export default routes;

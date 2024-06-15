@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\PassengerController;
 use App\Http\Controllers\Api\PhoneController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -22,6 +23,9 @@ Route::name('api')->group(function() {
 
         Route::post('users', [UserController::class, 'store'])->name('users.store');
         Route::get('users/createData', [UserController::class, 'createData'])->name('users.createData');
+
+        Route::post('passengers', [PassengerController::class, 'store'])->name('passenger.store');
+        Route::get('passengers/createData', [PassengerController::class, 'createData'])->name('passenger.createData');
 
         Route::get('phones/{phone}', [PhoneController::class, 'show'])->name('phone.show');
     });
