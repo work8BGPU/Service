@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\PhoneController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +19,11 @@ Route::name('api')->group(function() {
 
         Route::post('employees', [EmployeeController::class, 'store'])->name('employee.store');
         Route::get('employees/createData', [EmployeeController::class, 'createData'])->name('employee.createData');
+
+        Route::post('users', [UserController::class, 'store'])->name('users.store');
+        Route::get('users/createData', [UserController::class, 'createData'])->name('users.createData');
+
+        Route::get('phones/{phone}', [PhoneController::class, 'show'])->name('phone.show');
     });
     Route::post('refresh', [AuthController::class, 'refresh'])->name('refresh');
 });
