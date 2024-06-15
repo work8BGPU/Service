@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use App\Http\Requests\Api\Auth\RegisterRequest;
+use App\Models\User\User;
 use App\Services\AuthService;
+use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -16,7 +18,7 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function __construct(protected AuthService $authService)
+    public function __construct(protected AuthService $authService, protected UserService $userService)
     {
     }
 
@@ -93,7 +95,7 @@ class AuthController extends Controller
 
     public function me()
     {
-        $user = auth()->user();
+        $user = $this->userService->getMe();
 
         if (!$user) {
             return response()->json([

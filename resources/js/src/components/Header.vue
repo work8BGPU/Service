@@ -6,7 +6,7 @@
             </button>
             <h1 class="header__title">Careflow</h1>
             <div class="header__user">
-                <h5>{{ name }}</h5>
+                <h5>{{ user.employee.name }}</h5>
                 <button v-if="!isUserMenuOpened" @click="openUser">
                     <img src="@/assets/img/icons/menu-down.svg" alt="Меню" />
                 </button>
@@ -18,8 +18,8 @@
                     <img src="@/assets/img/icons/menu-down.svg" alt="Меню" />
                 </button>
                 <div v-if="isUserMenuOpened" class="header__user__menu">
-                    <h6>Сопровождающий</h6>
-                    <p>+870878</p>
+                    <h6>{{ user.role.title }}</h6>
+                    <p>+{{ user.phone.phone }}</p>
                     <button @click="logout">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -74,11 +74,12 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { handleUnauthorized } from "@/scripts/handleUnauthorized.js";
 import axios from "axios";
+import { computed } from "vue";
 
 const store = useStore();
 const router = useRouter();
 
-const name = store.state.user.phone_id;
+const user = computed(() => store.state.user);
 const isUserMenuOpened = ref(false);
 
 const openUser = () => {

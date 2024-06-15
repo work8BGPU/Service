@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthService
 {
+    public function __construct(protected UserService $userService)
+    {
+    }
+
     public function login(array $data): array|bool
     {
         $credentials = [
@@ -27,7 +31,7 @@ class AuthService
             return false;
         }
 
-        $user = Auth::user();
+        $user = $this->userService->getMe();
 
         return [
             'token' => $token,

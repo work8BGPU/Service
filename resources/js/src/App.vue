@@ -9,7 +9,7 @@
 import Header from "./components/Header.vue";
 import { handleUnauthorized } from "@/scripts/handleUnauthorized.js";
 
-import { computed, ref, onMounted } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import axios from "axios";
@@ -26,7 +26,7 @@ if (!token.value) {
 }
 
 const takeUser = () => {
-    if (store.state.token) {
+    if (store.state.token || !store.state.user) {
         axios
             .post(
                 "api/me",
@@ -44,9 +44,7 @@ const takeUser = () => {
     }
 };
 
-onMounted(() => {
-    takeUser();
-});
+takeUser();
 </script>
 
 <style>
