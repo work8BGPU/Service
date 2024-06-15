@@ -2,9 +2,9 @@
 
 namespace App\Models\Request;
 
-use App\Models\MetroStation;
+use App\Models\Station\MetroStation;
 use App\Models\Passenger\Passenger;
-use App\Models\Station;
+use App\Models\Station\Station;
 use App\Models\User\Employee;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
