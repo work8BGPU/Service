@@ -32,7 +32,7 @@ class AuthService
         }
 
         $user = $this->userService->getMe();
-
+        
         return [
             'token' => $token,
             'user' => $user

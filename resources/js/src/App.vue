@@ -34,7 +34,7 @@ const takeUser = () => {
     if (store.state.token || !store.state.user) {
         axios
             .post(
-                "api/me",
+                "/api/me",
                 {},
                 { headers: { Authorization: `Bearer ${store.state.token}` } }
             )

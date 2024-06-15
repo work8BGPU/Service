@@ -1,7 +1,7 @@
 <template>
     <section class="main__section">
         <div class="container">
-            <div>ssss</div>
+            <div>ssss</div>            
         </div>
     </section>
 </template>

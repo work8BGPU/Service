@@ -93,7 +93,7 @@ const closeUser = () => {
 const logout = () => {
     axios
         .post(
-            "api/logout",
+            "/api/logout",
             {},
             {
                 headers: { Authorization: `Bearer ${store.state.token}` },
