@@ -36,8 +36,10 @@ class Employee extends Model
         'position_id' => 'integer',
         'area_id' => 'integer',
         'workday_id' => 'integer',
-    ];
+    ];    
 
+    protected $appends = ['fio', 'fio_short'];
+    
     private static function getGenders(): array
     {
         return [
@@ -53,16 +55,16 @@ class Employee extends Model
 
     public function getFioAttribute(): string
     {
-        $fio = $this->name . ' ' . $this->lastname;
+        $fio = $this->lastname . ' ' . $this->name;
         if ($this->patronymic) $fio .= ' ' . $this->patronymic;
         return $fio;
     }
 
     public function getFioShortAttribute(): string
     {
-        $name = substr($this->name, 0, 1) . '.';
+        $name = mb_substr($this->name, 0, 1) . '.';
         $fio = $this->lastname . ' ' . $name;
-        if ($this->patronymic) $fio .= substr($this->patronymic, 0, 1) . '.';
+        if ($this->patronymic) $fio .= mb_substr($this->patronymic, 0, 1) . '.';
         return $fio;
     }
 
@@ -104,5 +106,5 @@ class Employee extends Model
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
-    }
+    }        
 }
