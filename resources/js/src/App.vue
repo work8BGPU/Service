@@ -33,13 +33,14 @@ if (!token.value) {
 const takeUser = () => {
     if (store.state.token || !store.state.user) {
         axios
-            .post(
-                "/api/me",
-                {},
-                { headers: { Authorization: `Bearer ${store.state.token}` } }
+        .post(
+            "/api/me",
+            {},
+            { headers: { Authorization: `Bearer ${store.state.token}` } }
             )
             .then((res) => {
                 store.commit("setUser", res.data.user);
+                store.commit("setIsAuth", true);
             })
             .catch((error) => {
                 if (error.response.status === 401) {
