@@ -91,7 +91,7 @@
                             :options="areas"
                             optionLabel="title"
                             id="area"
-                            placeholder="Выберите значение"
+                            placeholder="Выберите или укажите значение"
                             class="select-main"
                         />
                         <p v-if="errors.area" class="error">
@@ -106,7 +106,7 @@
                             :options="positions"
                             optionLabel="title"
                             id="position"
-                            placeholder="Выберите значение"
+                            placeholder="Выберите или укажите значение"
                             class="select-main"
                         />
                         <p v-if="errors.position" class="error">
@@ -135,7 +135,7 @@
                             :options="shifts"
                             optionLabel="title"
                             id="shift"
-                            placeholder="Выберите значение"
+                            placeholder="Выберите или укажите значение"
                             class="select-main"
                         />
                         <p v-if="errors.shift" class="error">
