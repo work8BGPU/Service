@@ -77,13 +77,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Role::class);
     }
 
-    public function employee(): HasOne
+    public function employee(): BelongsTo
     {
-        return $this->hasOne(Employee::class);
+        return $this->belongsTo(Employee::class);
     }
 
-    public function phone(): HasOne
+    public function phone(): BelongsTo
     {
-        return $this->hasOne(Phone::class);
+        return $this->belongsTo(Phone::class);
     }
 }

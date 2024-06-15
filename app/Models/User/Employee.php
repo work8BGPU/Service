@@ -71,9 +71,9 @@ class Employee extends Model
         return $this->belongsTo(Phone::class, 'work_phone_id');
     }
 
-    public function personalPhone(): HasOne
+    public function personalPhone(): BelongsTo
     {
-        return $this->hasOne(Phone::class, 'personal_phone_id');
+        return $this->belongsTo(Phone::class, 'personal_phone_id');
     }
 
     public function shift(): BelongsTo
@@ -91,9 +91,9 @@ class Employee extends Model
         return $this->belongsTo(Area::class);
     }
 
-    public function workday(): HasOne
+    public function workday(): BelongsTo
     {
-        return $this->hasOne(Workday::class);
+        return $this->belongsTo(Workday::class);
     }
 
     public function requests(): BelongsToMany
@@ -101,8 +101,8 @@ class Employee extends Model
         return $this->belongsToMany(Request::class);
     }
 
-    public function user(): BelongsTo
+    public function user(): HasOne
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 }

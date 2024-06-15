@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Phone extends Model
 {
@@ -33,13 +34,13 @@ class Phone extends Model
         return $this->hasMany(Employee::class, 'work_phone_id');
     }
 
-    public function employeePersonal(): BelongsTo
+    public function employeePersonal(): HasOne
     {
-        return $this->belongsTo(Employee::class, 'personal_phone_id');
+        return $this->hasOne(Employee::class, 'personal_phone_id');
     }
 
-    public function user(): BelongsTo
+    public function user(): HasOne
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 }
