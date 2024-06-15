@@ -31,27 +31,9 @@ class EmployeeService extends BaseService
 
     public function create(array $data): Employee
     {
-        if (is_array($data['position'])) {
-            $data['position_id'] = $data['position']['id'];
-        } else {
-            $data['position_id'] = Position::create(['title' => $data['position']])->id;
-        }
-
-        if (is_array($data['shift'])) {
-            $data['shift_id'] = $data['shift']['id'];
-        } else {
-            $data['shift_id'] = Shift::create(['title' => $data['shift']])->id;
-        }
-
-        if (is_array($data['area'])) {
-            $data['area_id'] = $data['area']['id'];
-        } else {
-            $data['area_id'] = Area::create(['title' => $data['area']])->id;
-        }
-
-        unset($data['position']);
-        unset($data['shift']);
-        unset($data['area']);
+        $data['position_id'] = $this->setFieldId($data['position'], Position::class);
+        $data['shift_id'] = $this->setFieldId($data['shift'], Shift::class);
+        $data['area_id'] = $this->setFieldId($data['area'], Area::class);
 
         if ($phone = Phone::where('phone', $data['personal_phone'])->first()) {
             $data['personal_phone_id'] = $phone->id;
@@ -64,9 +46,6 @@ class EmployeeService extends BaseService
         } else {
             $data['work_phone_id'] = Phone::create(['phone' => $data['work_phone']])->id;
         }
-
-        unset($data['personal_phone']);
-        unset($data['work_phone']);
 
         $data['sex'] = $data['sex']['id'];
         if ($data['light_work']) $data['light_work'] = $data['light_work']['id'];

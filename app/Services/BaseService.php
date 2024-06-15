@@ -39,4 +39,12 @@ abstract class BaseService
     {
         return $model->delete();
     }
+
+    protected function setFieldId(mixed $data, string $modelName, string $field = 'title'): int {
+        if (is_array($data)) {
+            return $data['id'];
+        }
+        $model = app($modelName);
+        return $model->create([$field => $data])->id;
+    }
 }
