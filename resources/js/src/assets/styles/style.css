@@ -18,11 +18,13 @@
   --form-width-lg: 30%;
   --form-width-md: 40%;
   --form-width-sm: 70%;
-  --form-width: var(--form-width-lg);
+  --form-width: 100%;
 
   --border-radius: 1rem;
 
   --transition: all ease-in-out 0.2s;
+
+  --shadow-main: 0 0.3rem 1.5rem 0 rgba(0, 0, 0, 0.25);
 }
 
 @font-face {
@@ -135,6 +137,20 @@ form {
   gap: 2rem;
 }
 
+.form-main {
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 9rem;
+}
+
+.form__blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  width: 45%;
+}
+
 .form__block {
   width: 100%;
   display: flex;
@@ -150,7 +166,7 @@ form {
 
 label {
   font-size: var(--font-size-small);
-  color: var(--color-1);
+  color: var(--color-second);
   margin-left: 1rem;
 }
 
@@ -161,22 +177,46 @@ input {
   border: none;
 }
 
-.input-main {
-  color: var(--color-1);
-  border: 0.1rem solid var(--color-1);
-  padding: 0.8rem 1.5rem;
+.input-main, .form-main input[data-pc-extend] {
+  color: var(--color-second);
+  background-color: var(--color-main);
+  padding: 2rem 2.5rem;
   width: 100%;
+  box-shadow: var(--shadow-main);
 }
 
-form > .btn-main {
-  margin-top: 2rem;
-  align-self: center;
+.p-select .p-select-label {
+  background-color: var(--color-main);
+  padding: 2rem;
+  width: 70%;
+  font-size: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.25);
+}
+
+.p-select .p-select-dropdown svg {
+  margin-left: -4rem;
+  width: 2rem;
+}
+
+.p-select-list {
+  background-color: var(--color-main);
+  border: 0.1rem solid var(--color-second);
+  border-radius: var(--border-radius);  
+}
+
+.p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+  background-color: var(--color-btn-active);
 }
 
 .error {
   color: red;
   font-size: var(--font-size-small);
   margin-top: -1rem;
+}
+
+.form-main .error {
+  margin-top: 0.5rem;
 }
 
 /* <================ Кнопки ================> */
@@ -203,6 +243,15 @@ button {
 
 .btn-main:active {
   background-color: var(--color-btn-active);
+}
+
+form .btn-main {
+  margin-top: 2rem;
+  align-self: center;
+}
+
+.form-main .btn-main {
+  padding: 2rem 3rem;
 }
 /* <================ Конец кнопок ================> */
 
