@@ -180,7 +180,7 @@ const form = ref({
     work_phone: "",
     number: "",
     position: "",
-    sex: 1,
+    sex: null,
     shift: "",
     light_work: false,
 });
@@ -224,6 +224,7 @@ const createData = () => {
 const create = () => {
     form.value.personal_phone = form.value.personal_phone.replace(/\D/g, "");
     form.value.work_phone = form.value.work_phone.replace(/\D/g, "");
+    form.value.sex = form.value.sex.id;
     errors.value = {};
 
     axios
