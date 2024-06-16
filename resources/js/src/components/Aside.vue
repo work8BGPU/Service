@@ -270,9 +270,9 @@
                     Регистрация пользователя
                 </router-link>
                 <router-link
-                    to="/users/workdays/create"
+                    to="/workdays/create"
                     class="nav-link"
-                    :class="{ active: isActive('/users/workdays/create') }"
+                    :class="{ active: isActive('/workdays/create') }"
                 >
                     <svg
                         width="32"

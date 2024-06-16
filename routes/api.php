@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PhoneController;
 use App\Http\Controllers\Api\RequestController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\WorkdayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,9 @@ Route::name('api')->group(function () {
 
         Route::post('employees', [EmployeeController::class, 'store'])->name('employee.store');
         Route::get('employees/createData', [EmployeeController::class, 'createData'])->name('employee.createData');
+
+        Route::post('workdays', [WorkdayController::class, 'store'])->name('workday.store');
+        Route::get('workdays/createData', [WorkdayController::class, 'createData'])->name('workday.createData');
 
         Route::post('users', [UserController::class, 'store'])->name('users.store');
         Route::get('users/createData', [UserController::class, 'createData'])->name('users.createData');

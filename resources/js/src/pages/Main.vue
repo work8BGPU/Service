@@ -89,7 +89,6 @@ const getRequests = (page = 1) => {
         .then((response) => {
             requests.value = response.data.data;
             meta.value = response.data.meta;
-            console.log(response.data);
         })
         .catch((error) => {
             if (error.response.status === 401) {

@@ -4,6 +4,7 @@ import EmployeeCreate from "@/pages/Employee/Create.vue";
 import UserCreate from "@/pages/User/Create.vue";
 import PassengerCreate from "@/pages/Passenger/Create.vue";
 import RequestCreate from "@/pages/Request/Create.vue";
+import WorkdayCreate from "@/pages/Workday/Create.vue";
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
         component: RequestCreate,
         name: 'request.create'
     },
+    {
+        path: "/workdays/create",
+        component: WorkdayCreate,
+        name: 'workdays.create'
+    }
 ];
 
 export default routes;
