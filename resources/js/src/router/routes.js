@@ -3,6 +3,7 @@ import Login from "@/pages/Login.vue";
 import EmployeeCreate from "@/pages/Employee/Create.vue";
 import UserCreate from "@/pages/User/Create.vue";
 import PassengerCreate from "@/pages/Passenger/Create.vue";
+import RequestCreate from "@/pages/Request/Create.vue";
 
 const routes = [
     {
@@ -29,6 +30,11 @@ const routes = [
         path: "/passengers/create",
         component: PassengerCreate,
         name: "passenger.create"
+    },
+    {
+        path: "/requests/create",
+        component: RequestCreate,
+        name: 'request.create'
     },
 ];
 

@@ -25,12 +25,38 @@
 
   --transition: all ease-in-out 0.2s;
 
-  --shadow-main: 0 0.3rem 1.5rem 0.1rem rgba(0, 0, 0, 0.25);
+  --shadow-main: 0 0.3rem 1.5rem 0.1rem rgba(0, 0, 0, 0.25);  
+}
 
+/* primevue */
+:root {
   --p-select-overlay-border-color: var(--color-second);
   --p-select-overlay-border-radius: var(--border-radius);
   --p-select-overlay-background: var(--color-main);
   --p-select-option-focus-color: var(--color-btn-hover);
+
+  --p-inputtext-color: var(--color-second);
+  --p-inputtext-background: var(--color-main);
+  --p-inputtext-padding-y: 2rem;
+  --p-inputtext-padding-x: 2rem;
+
+  --p-inputtext-focus-ring-shadow: var(--shadow-main);
+
+  --p-datepicker-panel-background: var(--color-main);
+  --p-datepicker-panel-border-radius: var(--border-radius);
+  --p-datepicker-panel-border-color: var(--color-second);
+
+  --p-datepicker-header-padding: 2rem;
+  --p-datepicker-header-font-weight: bold;
+  --p-datepicker-header-border-color: var(--color-btn);
+
+  --p-datepicker-day-view-margin: 1rem 0;
+
+  --p-datepicker-time-picker-gap: 2rem;
+  --p-datepicker-time-picker-border-color: var(--color-btn);
+  --p-datepicker-time-picker-padding: 1rem;
+
+  --p-icon-size: 2rem;
 }
 
 @font-face {
@@ -235,6 +261,36 @@ input {
   border: 0.1rem solid var(--color-second);
   border-radius: var(--border-radius);  
   margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.p-inputtext {
+  font-size: var(--font-size-normal);
+}
+
+.p-iconfield {
+  border-radius: var(--border-radius);
+}
+
+.form__block .p-datepicker-input {
+  font-size: var(--font-size-normal);
+  border-radius: var(--border-radius);
+}
+
+.p-datepicker-header {
+  margin-bottom: 1rem;
+}
+
+.p-datepicker-time-picker span[data-pc-group-section="timepickerlabel"] {
+  font-size: 1.4rem;
+}
+
+.p-datepicker-weekday {
+  font-size: var(--font-size-extrasmall);
+}
+
+.p-datepicker-day-cell {
+  font-size: 1.4rem;
 }
 
 .error {

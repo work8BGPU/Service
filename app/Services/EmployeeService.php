@@ -49,7 +49,7 @@ class EmployeeService extends BaseService
 
         $data['sex'] = $data['sex']['id'];
         if ($data['light_work']) $data['light_work'] = $data['light_work']['id'];
-
+       
         $employee = Employee::create($data);
         return $employee;
     }
