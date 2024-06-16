@@ -7,12 +7,13 @@ use App\Http\Requests\Api\Request\StoreRequest;
 use App\Http\Requests\Api\Request\UpdateStatusRequest;
 use App\Http\Resources\RequestResource;
 use App\Models\Request\Request;
+use App\Services\DistributionService;
 use App\Services\RequestService;
 use Illuminate\Http\Response;
 
 class RequestController extends Controller
 {
-    public function __construct(protected RequestService $requestService)
+    public function __construct(protected RequestService $requestService, protected DistributionService $distributionService)
     {
     }
 
@@ -20,6 +21,26 @@ class RequestController extends Controller
     {
         $requests = Request::with(['passenger', 'stationDeparture', 'stationArrival', 'category', 'status'])->paginate(20);
         return RequestResource::collection($requests);
+    }
+
+    public function distribution()
+    {
+        // Получаем заявки и сотрудников на следующие сутки
+        list($requests, $employees) = $this->distributionService->getTomorrowRequestsAndEmployees();
+
+        // Распределяем заявки
+        $schedule = $this->distributionService->distributeRequests($requests, $employees);
+
+        // Заполняем таблицу employee_requests
+        $this->distributionService->fillEmployeeRequestsTable($schedule);
+
+        // Визуализируем расписание
+        $this->distributionService->visualizeSchedule($schedule);
+
+        return response()->json([
+            'status' => 'success',
+            'schedule' => $schedule,
+        ]);
     }
 
     public function updateStatus(UpdateStatusRequest $requestHttp, Request $request)

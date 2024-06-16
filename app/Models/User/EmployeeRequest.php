@@ -10,7 +10,10 @@ class EmployeeRequest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'employee_id', 'request_id'
+        'employee_id',
+        'request_id',
+        'time_start',
+        'time_end'
     ];
 
     protected $casts = [

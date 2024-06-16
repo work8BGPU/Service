@@ -4,6 +4,7 @@ import EmployeeCreate from "@/pages/Employee/Create.vue";
 import UserCreate from "@/pages/User/Create.vue";
 import PassengerCreate from "@/pages/Passenger/Create.vue";
 import RequestCreate from "@/pages/Request/Create.vue";
+import RequestDistribution from "@/pages/Request/Distribution.vue";
 import WorkdayCreate from "@/pages/Workday/Create.vue";
 
 const routes = [
@@ -25,23 +26,28 @@ const routes = [
     {
         path: "/users/create",
         component: UserCreate,
-        name: "user.create"
+        name: "user.create",
     },
     {
         path: "/passengers/create",
         component: PassengerCreate,
-        name: "passenger.create"
+        name: "passenger.create",
     },
     {
         path: "/requests/create",
         component: RequestCreate,
-        name: 'request.create'
+        name: "request.create",
+    },
+    {
+        path: "/requests/distribution",
+        component: RequestDistribution,
+        name: "request.distribution",
     },
     {
         path: "/workdays/create",
         component: WorkdayCreate,
-        name: 'workdays.create'
-    }
+        name: "workdays.create",
+    },
 ];
 
 export default routes;

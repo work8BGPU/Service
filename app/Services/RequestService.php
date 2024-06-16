@@ -22,6 +22,11 @@ class RequestService extends BaseService
         parent::__construct(Request::class);
     }
 
+    public function distribution()
+    {
+        
+    }
+
     public function createData(): array
     {
         $categories = CategoryPassenger::all('id', 'short_title');

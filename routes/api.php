@@ -39,13 +39,15 @@ Route::name('api')->group(function () {
         Route::post('requests', [RequestController::class, 'store'])->name('request.store');
         Route::post('requests/{request}/updateStatus', [RequestController::class, 'updateStatus'])->name('request.updateStatus');
         Route::get('requests/createData', [RequestController::class, 'createData'])->name('request.createData');
-
+        
         Route::get('phones/{phone}', [PhoneController::class, 'show'])->name('phone.show');
         Route::get('categories/{category}', [CategoryController::class, 'show'])->name('category.show');
-
+        
         Route::post('metro/stations/findBestRoutes', [MetroStationController::class, 'findBestRoutes'])->name('metro.stations.findBestRoutes');
-
+        
         Route::get('statuses', [StatusController::class, 'index']);
+        // Route::get('requests/distribution', [RequestController::class, 'distribution']);
+        
     });
     Route::post('refresh', [AuthController::class, 'refresh'])->name('refresh');
 });
