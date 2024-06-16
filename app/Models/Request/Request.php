@@ -2,6 +2,7 @@
 
 namespace App\Models\Request;
 
+use App\Models\Passenger\CategoryPassenger;
 use App\Models\Station\MetroStation;
 use App\Models\Passenger\Passenger;
 use App\Models\Station\Station;
@@ -41,12 +42,28 @@ class Request extends Model
         'insp_m' => 'integer',
         'insp_f' => 'integer',
         'luggage_id' => 'integer',
-        'status_id' => 'integer'
+        'status_id' => 'integer',
+        'category_id' => 'integer'
     ];
+
+    public function getTimeStartAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('H:i');
+    }
+
+    public function getTimeEndAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('H:i');
+    }
 
     public function passenger(): BelongsTo
     {
         return $this->belongsTo(Passenger::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(CategoryPassenger::class, 'category_id');
     }
 
     public function stationDeparture(): BelongsTo
