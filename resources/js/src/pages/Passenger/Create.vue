@@ -201,7 +201,7 @@
                         <small>{{ errors.phones[0] }}</small>
                     </p>
                 </div>
-                <button class="btn-main">Зарегистрировать сотрудника</button>
+                <button class="btn-main">Зарегистрировать пассажира</button>
             </form>
         </div>
     </section>

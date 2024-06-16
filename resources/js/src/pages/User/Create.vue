@@ -77,7 +77,7 @@
                         </p>
                     </div>
                 </div>
-                <button class="btn-main">Зарегистрировать сотрудника</button>
+                <button class="btn-main">Зарегистрировать пользователя</button>
             </form>
         </div>
     </section>
