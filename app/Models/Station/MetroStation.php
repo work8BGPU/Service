@@ -13,7 +13,7 @@ class MetroStation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'station_line_id'
+        'id', 'title', 'station_line_id', 'name_line'
     ];
 
     protected $casts = [
@@ -33,5 +33,25 @@ class MetroStation extends Model
     public function requestsArrival(): HasMany
     {
         return $this->hasMany(Request::class, 'station_arrival_id');
+    }
+
+    public function timeStationsFirst(): HasMany
+    {
+        return $this->hasMany(TimeStation::class, 'st1_id');
+    }
+
+    public function timeStationsSecond(): HasMany
+    {
+        return $this->hasMany(TimeStation::class, 'st2_id');
+    }
+
+    public function timeTransfersFirst(): HasMany
+    {
+        return $this->hasMany(TimeTransfer::class, 'st1_id');
+    }
+    
+    public function timeTransfersSecond(): HasMany
+    {
+        return $this->hasMany(TimeTransfer::class, 'st2_id');
     }
 }

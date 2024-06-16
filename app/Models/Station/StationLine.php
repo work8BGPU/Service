@@ -11,7 +11,7 @@ class StationLine extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title'
+        'id', 'title'
     ];
 
     public function stations(): HasMany
