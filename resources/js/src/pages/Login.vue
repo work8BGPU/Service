@@ -67,28 +67,30 @@ const errors = ref({});
 const router = useRouter();
 const store = useStore();
 
-const login = () => {
+const auth = async (myToken, myUser) => {
+    store.commit("auth", {
+        user: myUser,
+        token: myToken
+    });
+}
+
+const login = async () => {
     form.value.phone = form.value.phone.replace(/\D/g, "");
     errors.value = {};
 
-    axios
-        .post("/api/login", form.value)
-        .then((res) => {
-            if (res.status === 201) {
-                store.commit("auth", {
-                    user: res.data.user,
-                    token: res.data.token,
-                });
-                router.push("/");
-            }
-        })
-        .catch((error) => {
-            if (error.response.status === 422) {
-                errors.value = error.response.data.errors;
-            } else if (error.response.status === 401) {
-                errors.value.incorrect = error.response.data.message;
-            }
-        });
+    try {
+        const res = await axios.post("/api/login", form.value);
+        if (res.status === 201) {
+            await auth(res.data.token, res.data.user);
+            await router.push("/");
+        }
+    } catch (error) {
+        if (error.response.status === 422) {
+            errors.value = error.response.data.errors;
+        } else if (error.response.status === 401) {
+            errors.value.incorrect = error.response.data.message;
+        }
+    }
 };
 </script>
 
