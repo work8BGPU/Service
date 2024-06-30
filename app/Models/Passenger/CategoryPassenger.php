@@ -11,7 +11,7 @@ class CategoryPassenger extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'short_title',
+        'id', 'title', 'short_title',
         'description'
     ];
 

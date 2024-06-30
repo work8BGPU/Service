@@ -19,23 +19,20 @@ class RequestController extends Controller
 
     public function index()
     {
-        $requests = Request::with(['passenger', 'stationDeparture', 'stationArrival', 'category', 'status'])->paginate(20);
+        $requests = Request::with(['passenger', 'stationDeparture', 'stationArrival', 'category', 'status', 'employees'])->orderBy('id', 'desc')->paginate(20);
         return RequestResource::collection($requests);
     }
 
     public function distribution()
     {
         // Получаем заявки и сотрудников на следующие сутки
-        list($requests, $employees) = $this->distributionService->getTomorrowRequestsAndEmployees();
+        list($requests, $employees) = $this->distributionService->getRequestsAndEmployees();
 
         // Распределяем заявки
         $schedule = $this->distributionService->distributeRequests($requests, $employees);
 
         // Заполняем таблицу employee_requests
         $this->distributionService->fillEmployeeRequestsTable($schedule);
-
-        // Визуализируем расписание
-        $this->distributionService->visualizeSchedule($schedule);
 
         return response()->json([
             'status' => 'success',

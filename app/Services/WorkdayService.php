@@ -43,6 +43,9 @@ class WorkdayService extends BaseService
 
         $workday = Workday::create($data);
 
+        $employee = Employee::find($data['employee_id']);
+        $employee->update(['workday_id' => $workday->id]);
+
         if (!$data['jobless_days']) return $workday;
 
         $joblessDays = $data['jobless_days'];
@@ -54,7 +57,7 @@ class WorkdayService extends BaseService
             $newJoblessDays[] = $newJoblessDay;
         }
 
-        $workday->joblessDays()->saveMany($newJoblessDays);
+        $workday->joblessDays()->saveMany($newJoblessDays);        
 
         return $workday;
     }

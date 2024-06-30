@@ -17,6 +17,7 @@ class Request extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'passenger_id',
         'station_departure_id', 'station_arrival_id',
         'description_departure', 'description_arrival',
@@ -26,7 +27,8 @@ class Request extends Model
         'category_id',
         'insp_m', 'insp_f',
         'luggage_id', 'status_id',
-        'information'
+        'information',
+        'created_at'
     ];
 
     protected $casts = [
@@ -103,6 +105,6 @@ class Request extends Model
 
     public function employees(): BelongsToMany
     {
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsToMany(Employee::class, 'employee_requests');
     }
 }

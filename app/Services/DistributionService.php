@@ -7,27 +7,30 @@ use App\Models\Request\Request;
 use App\Models\User\Employee;
 use App\Models\User\EmployeeRequest;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class DistributionService
 {
     /**
-     * Получение заявок и сотрудников на следующие сутки.
+     * Получение всех заявок и сотрудников.
      *
      * @return array
      */
-    public function getTomorrowRequestsAndEmployees(): array
+    public function getRequestsAndEmployees(): array
     {
-        // Получаем дату следующего дня
-        $tomorrow = Carbon::tomorrow();
+        $requests = Request::all();
 
-        // Получаем заявки на следующие сутки
-        $requests = Request::whereDate('date_meet', $tomorrow)->get();
-
-        // Получаем сотрудников, которые не отдыхают на следующие сутки
-        $employees = Employee::whereDoesntHave('workday.joblessDays', function ($query) use ($tomorrow) {
-            $query->whereDate('start', '<=', $tomorrow)
-                ->whereDate('end', '>=', $tomorrow);
-        })->get();
+        // Получаем сотрудников, которые не отдыхают на дату заявки и у которых есть расписание
+        $employees = Employee::whereDoesntHave('workday.joblessDays', function ($query) use ($requests) {
+            $query->where(function ($query) use ($requests) {
+                foreach ($requests as $request) {
+                    $query->orWhere(function ($query) use ($request) {
+                        $query->whereDate('start', '<=', $request->date_meet)
+                            ->whereDate('end', '>=', $request->date_meet);
+                    });
+                }
+            });
+        })->whereHas('workday')->get();
 
         return [$requests, $employees];
     }
@@ -42,50 +45,105 @@ class DistributionService
     public function distributeRequests(Collection $requests, Collection $employees): array
     {
         $schedule = [];
-        $employeeCount = $employees->count();
 
-        if ($employeeCount == 0) {
-            // Если нет доступных сотрудников
-            return array_map(function ($request) {
-                return [
-                    'employee_id' => null,
-                    'request_id' => $request->id,
-                    'time_start' => $request->date_meet . ' ' . $request->time_start,
-                    'time_end' => $request->date_meet . ' ' . $request->time_end,
-                    'note' => 'No available employees'
-                ];
-            }, $requests->all());
-        }
+        // Подсчитать количество текущих заявок у каждого сотрудника
+        $employeesRequestCount = $employees->mapWithKeys(function ($employee) {
+            return [$employee->id => $employee->requests()->count()];
+        })->toArray();
 
-        foreach ($requests as $index => $request) {
+        foreach ($requests as $request) {
+            $requestEmployeesCount = $request->employees()->count();
+            $requestEmployeesNeed = $request->insp_f + $request->insp_m;
+
+            if ($requestEmployeesCount >= $requestEmployeesNeed) continue;
+
             $time_start = Carbon::parse($request->date_meet)->setTimeFromTimeString($request->time_start);
             $time_end = Carbon::parse($request->date_meet)->setTimeFromTimeString($request->time_end);
+            if ($time_end->lt($time_start)) {
+                $time_end->addDay();
+            }
 
-            // Получаем индекс сотрудника для равномерного распределения
-            $employeeIndex = $index % $employeeCount;
-            $employee = $employees[$employeeIndex];
+            $optimalEmployees = [
+                'male' => [],
+                'female' => []
+            ];
 
-            // Проверяем, работает ли сотрудник в это время
-            if ($employee->workday) {
-                $workday = $employee->workday;
-                $work_start = Carbon::parse($time_start->toDateString() . ' ' . $workday->time_start);
-                $work_end = Carbon::parse($time_start->toDateString() . ' ' . $workday->time_end);
+            // Сортируем сотрудников по количеству текущих заявок
+            $sortedEmployees = $employees->sortBy(function ($employee) use ($employeesRequestCount) {
+                return $employeesRequestCount[$employee->id];
+            });
+
+            foreach ($sortedEmployees as $employee) {
+                $workday = $employee->workday()->first();
+                if (!$workday) {
+                    continue;
+                }
+
+                $timeWork = $workday->timeWork()->first();
+                if (!$timeWork) {
+                    continue;
+                }
+
+                $work_times = explode("-", $timeWork->time);
+                $work_start = Carbon::parse($time_start->toDateString() . ' ' . trim($work_times[0]));
+                $work_end = Carbon::parse($time_start->toDateString() . ' ' . trim($work_times[1]));
+
+                if ($work_end->lt($work_start)) {
+                    $work_end->addDay();
+                }
 
                 if ($time_start->between($work_start, $work_end) && $time_end->between($work_start, $work_end)) {
+                    $hasConflict = $employee->requests()
+                        ->where(function ($query) use ($time_start, $time_end) {
+                            $query->where(function ($query) use ($time_start, $time_end) {
+                                $query->whereRaw("CONCAT(requests.date_meet, ' ', requests.time_start) <= ?", [$time_start])
+                                    ->whereRaw("CONCAT(requests.date_meet, ' ', requests.time_end) >= ?", [$time_start]);
+                            })
+                                ->orWhere(function ($query) use ($time_start, $time_end) {
+                                    $query->whereRaw("CONCAT(requests.date_meet, ' ', requests.time_start) <= ?", [$time_end])
+                                        ->whereRaw("CONCAT(requests.date_meet, ' ', requests.time_end) >= ?", [$time_end]);
+                                })
+                                ->orWhere(function ($query) use ($time_start, $time_end) {
+                                    $query->whereRaw("CONCAT(requests.date_meet, ' ', requests.time_start) >= ?", [$time_start])
+                                        ->whereRaw("CONCAT(requests.date_meet, ' ', requests.time_end) <= ?", [$time_end]);
+                                });
+                        })
+                        ->exists();
+
+                    if (!$hasConflict) {
+                        if ($employee->sex == Employee::SEX_MALE && count($optimalEmployees['male']) < $request->insp_m) {
+                            $optimalEmployees['male'][] = $employee;
+                        } elseif ($employee->sex == Employee::SEX_FEMALE && count($optimalEmployees['female']) < $request->insp_f) {
+                            $optimalEmployees['female'][] = $employee;
+                        }
+
+                        if (count($optimalEmployees['male']) >= $request->insp_m && count($optimalEmployees['female']) >= $request->insp_f) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (count($optimalEmployees['male']) >= $request->insp_m && count($optimalEmployees['female']) >= $request->insp_f) {
+                foreach ($optimalEmployees['male'] as $maleEmployee) {
                     $schedule[] = [
-                        'employee_id' => $employee->id,
+                        'employee_id' => $maleEmployee->id,
                         'request_id' => $request->id,
                         'time_start' => $time_start->toDateTimeString(),
                         'time_end' => $time_end->toDateTimeString(),
                     ];
-                } else {
+                    // Увеличиваем количество заявок у сотрудника
+                    $employeesRequestCount[$maleEmployee->id]++;
+                }
+                foreach ($optimalEmployees['female'] as $femaleEmployee) {
                     $schedule[] = [
-                        'employee_id' => null,
+                        'employee_id' => $femaleEmployee->id,
                         'request_id' => $request->id,
                         'time_start' => $time_start->toDateTimeString(),
                         'time_end' => $time_end->toDateTimeString(),
-                        'note' => 'Employee not available during this time'
                     ];
+                    // Увеличиваем количество заявок у сотрудника
+                    $employeesRequestCount[$femaleEmployee->id]++;
                 }
             } else {
                 $schedule[] = [
@@ -93,7 +151,7 @@ class DistributionService
                     'request_id' => $request->id,
                     'time_start' => $time_start->toDateTimeString(),
                     'time_end' => $time_end->toDateTimeString(),
-                    'note' => 'No workday information'
+                    'note' => 'Нет доступных сотрудников для выполнения заявки'
                 ];
             }
         }
@@ -118,26 +176,6 @@ class DistributionService
                     'time_end' => $entry['time_end']
                 ]);
             }
-        }
-    }
-
-    /**
-     * Визуализация расписания.
-     *
-     * @param array $schedule
-     * @return void
-     */
-    public function visualizeSchedule(array $schedule): void
-    {
-        foreach ($schedule as $entry) {
-            echo "Employee ID: " . ($entry['employee_id'] ?? 'None') . "\n";
-            echo "Request ID: " . $entry['request_id'] . "\n";
-            echo "Time Start: " . $entry['time_start'] . "\n";
-            echo "Time End: " . $entry['time_end'] . "\n";
-            if (isset($entry['note'])) {
-                echo "Note: " . $entry['note'] . "\n";
-            }
-            echo "------------------\n";
         }
     }
 }

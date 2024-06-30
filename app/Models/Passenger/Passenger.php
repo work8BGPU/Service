@@ -17,7 +17,7 @@ class Passenger extends Model
     const SEX_MALE = 1;
 
     protected $fillable = [
-        'name', 'lastname', 'patronymic',
+        'id', 'name', 'lastname', 'patronymic',
         'sex',  'category_id',
         'comment', 'CP'
     ];

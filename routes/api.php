@@ -46,7 +46,7 @@ Route::name('api')->group(function () {
         Route::post('metro/stations/findBestRoutes', [MetroStationController::class, 'findBestRoutes'])->name('metro.stations.findBestRoutes');
         
         Route::get('statuses', [StatusController::class, 'index']);
-        // Route::get('requests/distribution', [RequestController::class, 'distribution']);
+        Route::get('requests/distribution', [RequestController::class, 'distribution']);
         
     });
     Route::post('refresh', [AuthController::class, 'refresh'])->name('refresh');

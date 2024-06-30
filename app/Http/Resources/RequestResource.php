@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Employee\EmployeeFioResource;
 
 class RequestResource extends JsonResource
 {
@@ -17,6 +18,7 @@ class RequestResource extends JsonResource
         return [
             'id' => $this->id,
             'passenger_fio_short' => $this->passenger->fio_short,
+			'employees' => EmployeeFioResource::collection($this->employees),
             'station_departure' => $this->stationDeparture->title,
             'station_arrival' => $this->stationArrival->title,
             'time_start' => $this->time_start,

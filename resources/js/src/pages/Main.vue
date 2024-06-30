@@ -5,7 +5,8 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>ФИО</th>
+                        <th>Пассажир</th>
+                        <th>Сотрудники</th>
                         <th>Станция отправления</th>
                         <th>Станция прибытия</th>
                         <th>Время начала</th>
@@ -19,21 +20,29 @@
                     <tr v-for="(request, id) in requests" :key="id">
                         <td>{{ request.id }}</td>
                         <td>{{ request.passenger_fio_short }}</td>
+                        <td>
+                            <div v-if="request.employees.length" class="employees">
+                                <p v-for="(employee, id) in request.employees" :key="id">{{ employee.fio_short }}</p>
+                            </div>
+                            <div v-else class="employees">Нет</div>
+                        </td>
                         <td>{{ request.station_departure }}</td>
                         <td>{{ request.station_arrival }}</td>
                         <td>{{ request.time_start }}</td>
                         <td>{{ request.time_end }}</td>
                         <td>{{ request.category }}</td>
                         <td>
-                            <Select
-                                v-model="request.status"
-                                filter
-                                :options="statuses"
-                                optionLabel="title"
-                                placeholder="Выберите значение"
-                                class="select-main-main"
-                                @change="updateStatus(request)"
-                            />
+                            <div class="table-status">
+                                <Select
+                                    v-model="request.status"
+                                    filter
+                                    :options="statuses"
+                                    optionLabel="title"
+                                    placeholder="Выберите значение"
+                                    class="select-main-main"
+                                    @change="updateStatus(request)"
+                                />
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -129,6 +138,7 @@ getRequests(currentPage.value);
 
 <style>
 .main__section {
+    overflow: auto;
     margin-top: 7rem;
 }
 
@@ -190,5 +200,17 @@ getRequests(currentPage.value);
 }
 .table tbody tr td:last-child {
     border-radius: 0 1rem 1rem 0;
+}
+
+.employees {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.table-status {
+    width: 25rem;
+    text-wrap: wrap;
 }
 </style>

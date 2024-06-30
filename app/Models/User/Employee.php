@@ -100,7 +100,7 @@ class Employee extends Model
 
     public function requests(): BelongsToMany
     {
-        return $this->belongsToMany(Request::class);
+        return $this->belongsToMany(Request::class, 'employee_requests');
     }
 
     public function user(): HasOne
