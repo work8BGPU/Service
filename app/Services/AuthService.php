@@ -15,17 +15,18 @@ class AuthService
 
     public function login(array $data): array|bool
     {
-        $credentials = [
-            'password' => $data['password']
-        ];
-
         $phone = $data['phone'];
 
-        if ($phoneModel = Phone::where('phone', $phone)->first()) {
-            $credentials['phone_id'] = $phoneModel->id;
-        } else {
+        $phoneModel = Phone::where('phone', $phone)->first();
+
+        if (!$phoneModel) {
             return false;
         }
+
+        $credentials = [
+            'phone_id' => $phoneModel->id,
+            'password' => $data['password'],
+        ];
 
         if (!$token = Auth::attempt($credentials)) {
             return false;
