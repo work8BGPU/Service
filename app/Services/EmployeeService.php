@@ -35,17 +35,8 @@ class EmployeeService extends BaseService
         $data['shift_id'] = $this->setFieldId($data['shift'], Shift::class);
         $data['area_id'] = $this->setFieldId($data['area'], Area::class);
 
-        if ($phone = Phone::where('phone', $data['personal_phone'])->first()) {
-            $data['personal_phone_id'] = $phone->id;
-        } else {
-            $data['personal_phone_id'] = Phone::create(['phone' => $data['personal_phone']])->id;
-        }
-
-        if ($phone = Phone::where('phone', $data['work_phone'])->first()) {
-            $data['work_phone_id'] = $phone->id;
-        } else {
-            $data['work_phone_id'] = Phone::create(['phone' => $data['work_phone']])->id;
-        }
+        $data['personal_phone_id'] = Phone::firstOrCreate(['phone' => $data['personal_phone']])->id;
+        $data['work_phone_id'] = Phone::firstOrCreate(['phone' => $data['work_phone']])->id;
 
         $data['sex'] = $data['sex']['id'];
         if ($data['light_work']) $data['light_work'] = $data['light_work']['id'];
